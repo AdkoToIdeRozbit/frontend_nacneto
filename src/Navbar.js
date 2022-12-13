@@ -1,20 +1,24 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
+import logo_svg from "./svgs/logo.svg"
 
 export default function Navbar() {
   return (
     <nav className="nav">
-      <Link to="/" className="site-title">
-        Site Name
+      <Link to="/" className="logo">
+        <img src={logo_svg} alt='logo' />
       </Link>
       <ul>
-        <CustomLink to="/pricing">Pricing</CustomLink>
-        <CustomLink to="/about">About</CustomLink>
+        <CustomLink to="/nacenit">Naceniť</CustomLink>
+        <CustomLink to="/info">Informácie</CustomLink>
       </ul>
+
+      <button>Sign up</button>
+
     </nav>
   )
 }
 
-function CustomLink({ to, children, ...props }) {
+export function CustomLink({ to, children, ...props }) {
   const resolvedPath = useResolvedPath(to)
   const isActive = useMatch({ path: resolvedPath.pathname, end: true })
 

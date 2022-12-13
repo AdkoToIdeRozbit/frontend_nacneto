@@ -1,10 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora&display=swap');
+
 * {
+  font-family: 'Sora', sans-serif;
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
 }
+
+.projekty_svg{
+  padding-top: 100px;
+  display: flex;
+}
+
+/* .projekty_svg div:nth-child(3){margin-bottom: 10px; margin-top: -10px;} */
+.projekty_svg div:nth-child(2){margin-bottom: 5px; margin-top: -5px;}
+
+.card_container{
+  width: 30%;
+  cursor: alias;
+  outline: 4px solid rgb(54, 54, 54);
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  transition: 0.2s;
+}
+
+.card{
+  width: 100%;
+}
+
+.card_container:not(:first-child) {
+  margin-left: -10%;
+}
+
+.card_container:hover ~ .card_container,
+.card_container:focus-within ~ .card_container {
+  transform: translatex(30%);
+}
+
+.card_container:hover,
+.card_container:focus-within {
+  transform: translateY(-1rem);
+}
+
+.zacni{
+  background-color: rgb(174, 174, 174); 
+  padding: 15px;
+  border-radius: 15px;
+  width: fit-content;
+  list-style-type: none;
+  margin: auto;
+}
+
+.zacni a{
+  color: inherit;
+  text-decoration: none;
+  font-size: 30px;
+} 
+
+.zacni a:hover {
+  color:#00A0C6; 
+  text-decoration: none;
+  cursor:pointer;  
+} 
 
 .container {
   margin: 1rem;
@@ -18,10 +77,11 @@ body {
   justify-content: space-between;
   align-items: stretch;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
 }
 
-.site-title {
+.logo {
+  filter: invert(100%) sepia(45%) saturate(25%) hue-rotate(257deg) brightness(104%) contrast(102%);
   font-size: 2rem;
 }
 
