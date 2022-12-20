@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react'
+import PdfViewer from './PdfViewer'
 
 export default function About() {
-  const [ setFile ] = useState(null)
-  const [ fileName, setFileName ] = useState(null)
+  const [image, setImage] = useState('')
+  const [pdf, setPdf] = useState('')
+  const [ fileName, setFileName] = useState(null)
 
   const inputRef = useRef(null);
 
@@ -19,7 +21,7 @@ export default function About() {
     reader.onerror = function (error) {
       cb(error, null)
     }
-}
+  }
 
   const handleFileChange = event => {
     const fileObj = event.target.files && event.target.files[0];
@@ -32,23 +34,29 @@ export default function About() {
     
      fileToBase64(fileObj, async (err, result)  => {
       if (result) {
-        console.log(result)
         setFileName(fileObj)
     
-        let send_pdf = async () => {
-          fetch(`/api/aspdf/`, {
-            method:'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(result)
-          })
-        }
-        
-        send_pdf()
+        // let send_pdf = async () => {
+        //   return fetch(`/api/aspdf/`, {
+        //     method:'POST',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(result)
+        //   }).then(response => {
+        //     if(response.ok){
+        //       response.json().then(json => {
+        //         setImage(json.image)
+        //         console.log(json['ponuka'])
+
+        //       })
+        //     }
+        //   })
+        // }
+        // send_pdf()
+        setPdf(result)
 
       }
     })
-
-  };
+  }
 
   return (
     <>
@@ -59,19 +67,13 @@ export default function About() {
         onChange={handleFileChange}
       />
 
-      <div className='input_div' onClick={handleClick}>Open file upload box</div>
+      <div className='input_div' onClick={handleClick}>Vyber pdf</div>
       { fileName && <p className="filename">{fileName.name}</p> }
-    </>
-  );
+      { image && <img src={`data:image/jpeg;base64,${image}`} alt="A" /> }
 
-  // return (
-  //   <>
-  //     <form>
-  //       <input
-  //         type="file"
-  //         value={selectedFile}
-  //         onChange={(e) => setSelectedFile(e.target.files[0])}/>
-  //     </form>
-  //   </>
-  // );
+      <PdfViewer pdf={pdf}/>
+
+    </>
+
+  )
 }

@@ -9,6 +9,22 @@ body {
   margin: 0;
 }
 
+
+.rpv-core__minimal-button{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 48px;
+  height: 48px;
+}
+
+.rpv-core__minimal-button svg, .rpv-core__minimal-button img{
+  width: 24px;
+  height: 24px;
+}
+
+.rpv-core__minimal-button img{
+  transform: translateY(12px);
+}
+
 .input_div{
   font-size: 35px;
   border: 3px solid rgb(60, 60, 60);
