@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react'
-import PdfViewer from './PdfViewer'
+import { useState, useRef} from 'react'
+// import PdfViewer from '../Components/PdfViewer'
+import UserInput from '../Components/UserInput';
+import test from "../svgs/test.png"
 
-export default function About() {
-  const [image, setImage] = useState('')
+function About() {
   const [pdf, setPdf] = useState('')
-  const [ fileName, setFileName] = useState(null)
+  const [fileName, setFileName] = useState(null)
 
   const inputRef = useRef(null);
 
@@ -35,32 +36,14 @@ export default function About() {
      fileToBase64(fileObj, async (err, result)  => {
       if (result) {
         setFileName(fileObj)
-    
-        // let send_pdf = async () => {
-        //   return fetch(`/api/aspdf/`, {
-        //     method:'POST',
-        //     headers: {'Content-Type': 'application/json'},
-        //     body: JSON.stringify(result)
-        //   }).then(response => {
-        //     if(response.ok){
-        //       response.json().then(json => {
-        //         setImage(json.image)
-        //         console.log(json['ponuka'])
-
-        //       })
-        //     }
-        //   })
-        // }
-        // send_pdf()
         setPdf(result)
-
       }
     })
   }
 
   return (
     <>
-      <input
+      {/* <input
         style={{display: 'none'}}
         ref={inputRef}
         type="file"
@@ -68,12 +51,13 @@ export default function About() {
       />
 
       <div className='input_div' onClick={handleClick}>Vyber pdf</div>
-      { fileName && <p className="filename">{fileName.name}</p> }
-      { image && <img src={`data:image/jpeg;base64,${image}`} alt="A" /> }
+      { fileName && <p className="filename">{fileName.name}</p> } */}
 
-      <PdfViewer pdf={pdf}/>
+      {/* <PdfViewer pdf={pdf}/> */}
 
+      <UserInput image={test}/>
     </>
-
   )
 }
+
+export default About

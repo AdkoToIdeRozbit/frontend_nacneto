@@ -1,4 +1,4 @@
-import { CustomLink } from "../Navbar"
+import { CustomLink } from "../Components/Navbar"
 import svg1 from "../svgs/1.svg"
 import svg2 from "../svgs/2.svg"
 import svg3 from "../svgs/3.svg"

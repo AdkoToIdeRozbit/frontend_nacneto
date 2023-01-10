@@ -9,11 +9,35 @@ body {
   margin: 0;
 }
 
+canvas{
+  border: 1px solid black;
+}
+
+#defaultCanvas1,#defaultCanvas2,#defaultCanvas3, .c1{
+  display: none;
+  position: absoulte;
+}
+
+.PDF_VIEWER{
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+}
+
+.USER_INPUT{
+  margin: 0 auto;
+  width: 50%;
+  border: 2px solid black;
+}
+
+.USER_INPUT img{
+  width: 100%;
+}
 
 .rpv-core__minimal-button{
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  width: 48px;
-  height: 48px;
+  width: 48px !important;
+  height: 48px !important;
 }
 
 .rpv-core__minimal-button svg, .rpv-core__minimal-button img{
