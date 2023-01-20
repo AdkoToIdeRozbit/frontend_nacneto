@@ -8,9 +8,10 @@ var w, h, currentImageWidth, currentImageHeight;
 var x, y, tox, toy;
 var zoom = 0.001; //zoom step per mouse tick
 var base64URI
+var pg
 
 function UserInput(props) {
-  async function editPixels(imgData) {
+  function editPixels(imgData) {
     for (var i=0; i < imgData.length; i += 4) {
         imgData[i] = imgData[i] - 100;
         imgData[i+1] = imgData[i+1] - 100;
@@ -25,46 +26,52 @@ function UserInput(props) {
     i.onload = function(){
       inputW = i.naturalWidth
       inputH = i.naturalHeight
+    }
 
-      var c = document.createElement('canvas')
-      var ce = document.createElement('canvas')
+    img = p5.loadImage(props.image, () => {})
 
-      var ctx = c.getContext('2d');
-      ctx.canvas.width = inputW 
-      ctx.canvas.height = inputH
+    //   var c = document.createElement('canvas')
+    //   var ce = document.createElement('canvas')
 
-      ctx.drawImage(i, 0, 0);
-      var imageData = ctx.getImageData(0,0, c.width, c.height)
+    //   var ctx = c.getContext('2d');
+    //   ctx.canvas.width = inputW 
+    //   ctx.canvas.height = inputH
 
-      editPixels(imageData.data);
+    //   ctx.drawImage(i, 0, 0);
+    //   var imageData = ctx.getImageData(0,0, c.width, c.height)
 
-      var ctxEdited = ce.getContext('2d');
-      ctxEdited.canvas.width = inputW 
-      ctxEdited.canvas.height = inputH
-      ctxEdited.putImageData(imageData, 0, 0);
+    //   editPixels(imageData.data);
+
+    //   var ctxEdited = ce.getContext('2d');
+    //   ctxEdited.canvas.width = inputW 
+    //   ctxEdited.canvas.height = inputH
+    //   ctxEdited.putImageData(imageData, 0, 0);
       
-      base64URI = ce.toDataURL();
-      console.log(base64URI)
-      img = p5.loadImage(base64URI, () => {})
-    }  
+    //   base64URI = ce.toDataURL();
+    //   //console.log(base64URI)
+    // }  
+
+    
+
   } 
 
   function setup(p5, canvasParentRef){
-    console.log(img)
-
     canvasW = p5.windowWidth*0.8
     canvasH = canvasW * (inputH/inputW)
-
+    console.log(img)
 		p5.createCanvas(canvasW, canvasH).parent(canvasParentRef); 
+    pg = p5.createGraphics(canvasW, canvasH).parent(canvasParentRef); 
 
     w = currentImageWidth = canvasW;
     h = currentImageHeight = canvasH;
     x = tox = w / 2;
     y = toy = h / 2;
 
-    document.getElementById( "defaultCanvas0" ).onwheel = function(event){
-      event.preventDefault();
-    };
+
+    p5.cursor(p5.CROSS);
+    p5.noFill();
+    p5.stroke(p5.color(255,140,0));
+    p5.strokeWeight(2);
 	};
 
 	const draw = (p5) => {
@@ -76,10 +83,21 @@ function UserInput(props) {
     h = p5.lerp(h, currentImageHeight, 0.1);
     
     p5.image(img, x - w / 2, y - h / 2, w, h)
+    p5.image(pg, x - w / 2, y - h / 2, w, h);
+  
+    p5.rect(Math.round(p5.mouseX)-7, Math.round(p5.mouseY)-7, 10, 10);
 	};
 
   function onMouseClicked(p5){
-    console.log('a')
+    if(p5.mouseButton === 'center'){
+      let dx = p5.mouseX / currentImageWidth 
+      let dy = p5.mouseY / currentImageHeight 
+      console.log(canvasW-w, canvasH-h)
+      let posx = canvasW * dx
+      let posy = canvasH * dy 
+      pg.rect(Math.round(posx)-7, Math.round(posy)-7, 15, 15);
+    }
+    
   }
 
   function onMouseDragged(p5) {
@@ -128,7 +146,7 @@ function UserInput(props) {
     return false;
   }
 
-   // function onWindowResized(p5) {
+  // function onWindowResized(p5) {
   //   canvasW = p5.windowWidth*0.8
   //   canvasH = canvasW * (inputH/inputW)
   //   w = currentImageWidth = canvasW;
@@ -142,7 +160,7 @@ function UserInput(props) {
     <Sketch preload={preload} setup={setup} draw={draw}  
     mouseWheel={onMouseWheel} mouseDragged={onMouseDragged}
     // windowResized={onWindowResized}
-    mouseClicked={onMouseClicked}
+    mousePressed={onMouseClicked}
     />
   ) 
 }

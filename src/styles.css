@@ -13,11 +13,6 @@ canvas{
   border: 1px solid black;
 }
 
-#defaultCanvas1,#defaultCanvas2,#defaultCanvas3, .c1{
-  display: none;
-  position: absoulte;
-}
-
 .PDF_VIEWER{
   margin: 0 auto;
   width: 50%;
