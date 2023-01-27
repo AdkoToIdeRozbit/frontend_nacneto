@@ -12,7 +12,7 @@ var pg
 
 var img_data
 
-var points = []
+var polygons = [[]]
 
 function UserInput(props) {
 
@@ -91,14 +91,44 @@ function UserInput(props) {
     return [Math.round(canvasW * dx - (dif_x/bias)), Math.round(canvasH * dy - (dif_y/bias))]
   }
 
+  function point_in_polygon_count(polygons, point){
+    let count = 0
+
+    var x = point[0], y = point[1];
+    polygons.forEach(vs => {
+      var inside = false;
+      for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+          var xi = vs[i][0], yi = vs[i][1];
+          var xj = vs[j][0], yj = vs[j][1];
+          
+          var intersect = ((yi > y) !== (yj > y))
+              && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+          if (intersect) inside = !inside;
+      }
+      if(inside) count++
+    })
+
+    return count
+    
+  }
+
   function draw_polygon(){
     pg.fill(pg.color(255,140,0, 128))
+    //polygons = [[[100,100],[300,300],[500,100]], [[600,600],[700,600],[700,700],[600,700]]];
 
-    pg.beginShape();
-    points.forEach(p => {
-      pg.vertex(p[0], p[1])
-    });
-    pg.endShape();
+    polygons.forEach(polygon => {
+      // let num_of_polygons_inside = 0
+      // if(polygon.length > 0 && polygons.length > 1) num_of_polygons_inside = point_in_polygon_count(polygons, polygon[0])
+
+      // if(num_of_polygons_inside % 2 == 0) pg.fill(pg.color(255,140,0, 128))
+      // else pg.fill(pg.color(255,255,255, 255))
+
+      pg.beginShape();
+      polygon.forEach(p => {
+        pg.vertex(p[0], p[1])
+      });
+      pg.endShape();
+    })
 
     pg.fill(pg.color(255,255,255, 255))
   }
@@ -108,15 +138,36 @@ function UserInput(props) {
     pg.strokeWeight(2);
     pg.fill(pg.color(255,255,255, 255))
 
-    points.forEach(p => {
-      pg.circle(p[0], p[1], 10);
+    polygons.forEach(polygon => {
+      polygon.forEach(p => {
+        pg.circle(p[0], p[1], 10);
+      })
+      
     });
+  }
+
+  function points_close(p1,p2){
+    return Math.abs(p1[0]-p2[0]) < 10 && Math.abs(p1[1]-p2[1]) < 10
+  }
+
+  function add_point(pos){
+    if(polygons[polygons.length-1].length > 0){
+      let last_point = polygons[polygons.length-1][0]
+      if(points_close(last_point, pos)){
+        polygons[polygons.length-1].push(polygons[polygons.length-1][0])
+        polygons.push([])
+      }
+        
+      else 
+        polygons[polygons.length-1].push(pos)         
+    } 
+    else polygons[polygons.length-1].push(pos) 
   }
 
   function onMouseClicked(p5){
     if(p5.mouseButton === 'center'){
       let pos = world_pos(p5.mouseX, p5.mouseY)
-      points.push([pos[0], pos[1]])
+      add_point(pos)
 
       pg.clear()
       draw_polygon()
@@ -128,12 +179,12 @@ function UserInput(props) {
       let x_real = Math.round(pos[0]*dw)
       let y_real = Math.round(pos[1]*dh)
       
-      console.log(x_real, y_real)
-
       let d = 10
-      for(x=x_real-d; x<=x_real+d; x++){
-        for(y=y_real-d; y<=y_real+d; y++){
+      let c = 0
+      for(let x=x_real-d; x<=x_real+d; x++){
+        for(let y=y_real-d; y<=y_real+d; y++){
           //console.log(x,y)
+          c++;
         } 
       }
 
